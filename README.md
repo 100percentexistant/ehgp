@@ -20,7 +20,7 @@
   <p>"All caught up" page</p>
   
   <img src="https://github.com/shellings2027/ehgp/assets/136494426/88571775-fa95-415e-b8c0-b0fcd1994910">
-  <p>Grade sorting <strong>This was when grade sorting was not functional.</strong></p>
+  <p>Grade sorting. <strong>This was when grade sorting was not functional.</strong></p>
 
 
   <br><br><br>
