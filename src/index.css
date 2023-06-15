@@ -495,6 +495,7 @@ input[type="text"] {
   padding-bottom: 0.5vw;
   justify-content: flex-end;
   align-items: flex-end;
+  transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 .watermark p {
@@ -504,4 +505,8 @@ input[type="text"] {
 
 .watermark p:nth-child(1) {
   font-weight: bolder;
+  background: linear-gradient(to right, rgb(255, 100, 100), rgb(114, 114, 255));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }

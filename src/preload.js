@@ -1,15 +1,15 @@
 var electron = require("electron");
-var shell = require('electron').shell;
+var shell = require("electron").shell;
 var ipc = electron.ipcRenderer;
 var remote = electron.remote;
 
 window.addEventListener("DOMContentLoaded", function () {
     [...document.querySelectorAll('a[href^="http"]')].forEach(function (el) {
-        el.addEventListener('click', function (e) {
+        el.addEventListener("click", function (e) {
             e.preventDefault();
             shell.openExternal(this.href);
-            $(el).trigger('blur');
-            $(el).trigger('focusout');
+            $(el).trigger("blur");
+            $(el).trigger("focusout");
         });
     });
 
@@ -31,7 +31,12 @@ window.addEventListener("DOMContentLoaded", function () {
             }
         }
         var dates = arg.status.dates.slice(1);
-        dates = dates.map(x => new Date(x.replace(/(\d{4})-(\d{2})-(\d{2})/, "$2/$3/$1")).toISOString().split("T")[0]);
+        dates = dates.map(
+            (x) =>
+                new Date(x.replace(/(\d{4})-(\d{2})-(\d{2})/, "$2/$3/$1"))
+                    .toISOString()
+                    .split("T")[0]
+        );
         var start = new Date();
         start.setFullYear(start.getFullYear() - 1);
         start.setMonth(7);
@@ -43,14 +48,16 @@ window.addEventListener("DOMContentLoaded", function () {
         var between = [];
         var current = new Date(start);
         while (current <= end) {
-            if (!dates.some(x => new Date(x).getTime() === current.getTime())) {
-                between.push((new Date(current)).toISOString().split("T")[0]);
+            if (
+                !dates.some((x) => new Date(x).getTime() === current.getTime())
+            ) {
+                between.push(new Date(current).toISOString().split("T")[0]);
             }
             current.setDate(current.getDate() + 1);
         }
 
-        $('#datepicker').datepicker({
-            dateFormat: 'yy-mm-dd',
+        $("#datepicker").datepicker({
+            dateFormat: "yy-mm-dd",
             beforeShowDay: function (date) {
                 var string = jQuery.datepicker.formatDate("yy-mm-dd", date);
                 if (dates.includes(string)) {
@@ -60,17 +67,20 @@ window.addEventListener("DOMContentLoaded", function () {
                 }
             },
             onSelect: function (dateText, inst) {
-                dx = $('#datepicker').datepicker("getDate").toISOString().split("T")[0];
-            }
+                dx = $("#datepicker")
+                    .datepicker("getDate")
+                    .toISOString()
+                    .split("T")[0];
+            },
         });
 
-        $('#datepicker').datepicker("setDate", new Date());
+        $("#datepicker").datepicker("setDate", new Date());
 
-        $('#datepicker').datepicker("hide");
+        $("#datepicker").datepicker("hide");
     });
 
-    $('#datepicker').on('show', function (e) {
-        $('#ui-datepicker-div').toggleClass('show');
+    $("#datepicker").on("show", function (e) {
+        $("#ui-datepicker-div").toggleClass("show");
     });
 
     document.getElementById("close").addEventListener("click", function (e) {
@@ -174,15 +184,21 @@ window.addEventListener("DOMContentLoaded", function () {
                 if (!valid) {
                     ann.status = "Invalid grade";
                 }
-                
+
                 document.querySelector(".sorter").classList.remove("visible");
                 ipc.send("parsePls", {
                     type: "ann",
                     grade: [
                         ...document.querySelectorAll(".grades-bubble.enabled"),
                     ].map((e) => e.innerText),
-                    term: document.getElementById("grades-text").value.trim() == '' ? undefined : document.getElementById("grades-text").value.trim(),
-                    date: dx
+                    term:
+                        document.getElementById("grades-text").value.trim() ==
+                        ""
+                            ? undefined
+                            : document
+                                  .getElementById("grades-text")
+                                  .value.trim(),
+                    date: dx,
                 });
                 ipc.once("reply", function (event, arg) {
                     if (arg.type == "ann") {
@@ -205,14 +221,18 @@ window.addEventListener("DOMContentLoaded", function () {
                         } else {
                             var box = document.getElementById("ann-box");
                             box.children[0].innerHTML = `
-                                ${arg.status.anns.map((e) => `
+                                ${arg.status.anns
+                                    .map(
+                                        (e) => `
                                     <div class="ann">
                                         <div class="header">
                                             <div class="from">
                                                 <h1>${e.from}</h1>
                                             </div>
                                             <div class="to">
-                                                <h1>${e.to.split('To:')[1].trim()}</h1>
+                                                <h1>${e.to
+                                                    .split("To:")[1]
+                                                    .trim()}</h1>
                                             </div>
                                             <div class="date">
                                                 <h1>${dx}</h1>
@@ -222,16 +242,36 @@ window.addEventListener("DOMContentLoaded", function () {
                                             <h1>${e.content}</h1>
                                         </div>
                                     </div>
-                                `).join("")}
+                                `
+                                    )
+                                    .join("")}
                             `;
-                            [...document.querySelectorAll('#ann-box a')].forEach(el => {
-                                el.addEventListener('click', function(e) {
+                            [
+                                ...document.querySelectorAll("#ann-box a"),
+                            ].forEach((el) => {
+                                el.addEventListener("click", function (e) {
                                     e.preventDefault();
                                     shell.openExternal(el.href);
-                                    $(el).trigger('blur');
-                                    $(el).trigger('focusout');
+                                    $(el).trigger("blur");
+                                    $(el).trigger("focusout");
                                 });
                             });
+                        }
+
+                        var annContainer = document.getElementById("ann-box");
+                        var rect1 = annContainer.getBoundingClientRect();
+                        var watermark = document.querySelector(".watermark");
+                        var rect2 = watermark.getBoundingClientRect();
+                        var overlap = !(
+                            rect1.right < rect2.left ||
+                            rect1.left > rect2.right ||
+                            rect1.bottom < rect2.top ||
+                            rect1.top > rect2.bottom
+                        );
+                        if (overlap) {
+                            watermark.style = "transform: translateX(100%);";
+                        } else {
+                            watermark.style = "transform: translateX(0%);";
                         }
                     }
                 });
