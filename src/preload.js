@@ -212,7 +212,7 @@ window.addEventListener("DOMContentLoaded", function () {
                                                 <h1>${e.from}</h1>
                                             </div>
                                             <div class="to">
-                                                <h1>${e.to}</h1>
+                                                <h1>${e.to.split('To:')[1].trim()}</h1>
                                             </div>
                                             <div class="date">
                                                 <h1>${dx}</h1>

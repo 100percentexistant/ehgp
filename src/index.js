@@ -232,12 +232,12 @@ ipcMain.on("parsePls", async (event, arg) => {
                                     "strict-origin-when-cross-origin",
                             },
                             body: `searchTerm=${arg.term}`,
-                            method: "POST"
+                            method: "POST",
                         }
                     )
                 ).body.text();
             }
-            console.log(resp)
+
             var dom = new JSDOM(resp);
 
             var status = {};
@@ -252,48 +252,61 @@ ipcMain.on("parsePls", async (event, arg) => {
                 "#canv-container > h3:nth-child(8)"
             );
             if (!status.anns) status.anns = [];
-            if (!center) {
-                var announcements = [
-                    ...dom.window.document.querySelectorAll(
-                        "#canv-container > div.card-container > .card"
-                    ),
-                ];
-                if (announcements.length == 0)
-                    announcements = [
+            if (!arg.term) {
+                if (!center) {
+                    var announcements = [
                         ...dom.window.document.querySelectorAll(
-                            "div.card-container > .card"
+                            "#canv-container > div.card-container > .card"
                         ),
                     ];
-
-                for (var i = 0; i < announcements.length; i++) {
-                    try {
-                        var from = announcements[i].querySelector(
-                            ":scope h5.card-header"
-                        ).textContent;
-                        var to = announcements[i].querySelector(
-                            ":scope div.card-body > h5.card-title"
-                        ).textContent;
-                        var content = announcements[i].querySelector(
-                            ":scope div.card-body > p.card-text"
-                        ).innerHTML;
-                        status.anns.push({
-                            from: from,
-                            to: to,
-                            content: content,
-                        });
-                        cache.push({
-                            date: date,
-                            grade: grd,
-                            data: status,
-                        });
-                        status.now = "Announcement now";
-                    } catch (e) {
+                    for (var i = 0; i < announcements.length; i++) {
+                        try {
+                            var from = announcements[i].querySelector(
+                                ":scope h5.card-header"
+                            ).textContent;
+                            var to = announcements[i].querySelector(
+                                ":scope div.card-body > h5.card-title"
+                            ).textContent;
+                            var content = announcements[i].querySelector(
+                                ":scope div.card-body > p.card-text"
+                            ).innerHTML;
+                            status.anns.push({
+                                from: from,
+                                to: to,
+                                content: content,
+                            });
+                            cache.push({
+                                date: date,
+                                grade: grd,
+                                data: status,
+                            });
+                            status.now = "Announcement now";
+                        } catch (e) {
+                            status.now = "No announcements, enjoy your day!";
+                        }
+                    }
+                } else {
+                    if (center.textContent == "No Announcements Today") {
                         status.now = "No announcements, enjoy your day!";
                     }
                 }
             } else {
-                if (center.textContent == "No Announcements Today") {
+                if (resp.trim() == '') {
                     status.now = "No announcements, enjoy your day!";
+                } else {
+                    var cards = [...dom.window.document.querySelectorAll(".card")];
+                    for (var i = 0; i < cards.length; i++) {
+                        var from = cards[i].querySelector(":scope > h5.card-header").innerHTML.split('<br>')[0].trim();
+                        var date = cards[i].querySelector(":scope > h5.card-header").innerHTML.split('<br>')[1].trim().split(':')[1].trim();
+                        var to = cards[i].querySelector(":scope > .card-body > .card-title").innerHTML.trim();
+                        var content = cards[i].querySelector(":scope > .card-body > .card-text").innerHTML.trim();
+                        status.anns.push({
+                            from: from,
+                            to: to,
+                            content: content,
+                            date: date,
+                        });
+                    }
                 }
             }
 
