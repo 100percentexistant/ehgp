@@ -1,18 +1,19 @@
 {
-  "name": "enode",
-  "productName": "enode",
+  "name": "ehgp",
+  "productName": "ehgp",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "An Electron-based web app for Electronic Holy Ghost Prep.",
   "main": "src/index.js",
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
-    "lint": "echo \"No linting configured\""
+    "lint": "echo \"No linting configured\"",
+    "build": "electron-forge package && npx electron-installer-windows --src out/ehgp-win32-x64 --dest out/installers/"
   },
   "keywords": [],
-  "author": "Ben Stewart",
+  "author": "Stephen Hellings",
   "license": "MIT",
   "dependencies": {
     "electron-squirrel-startup": "^1.0.0",
