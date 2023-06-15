@@ -84,7 +84,14 @@ window.addEventListener("DOMContentLoaded", function () {
     });
 
     document.getElementById("close").addEventListener("click", function (e) {
-        ipc.send("close");
+        document.querySelector(".watermark").style = "opacity: 0;";
+        for (var x of [...document.querySelectorAll(".box")]) {
+            x.style = "transition: all 0.5s cubic-bezier(0.950, 0.050, 0.795, 0.035); transform: translate(-50%, 20%); opacity: 0;";
+        }
+        document.body.style.filter = "blur(10px) brightness(0.5)";
+        setTimeout(function () {
+            ipc.send("close");
+        }, 500);
     });
 
     document.getElementById("min").addEventListener("click", function (e) {
