@@ -2,6 +2,7 @@
   <img src="https://github.com/shellings2027/ehgp/assets/136494426/fc10a282-103a-469c-a499-7f69a4c04265" width="60%">
   <h1>EHGP-Node</h1>
   <h3>Electron-based desktop client for Electronic Holy Ghost Prep</h3>
+  <p><strong>Disclaimer</strong>: this is NOT an official application for EHGP, but it is a third-party application which only receives content from the EHGP API.</p>
   
   <br><br><br>
   
