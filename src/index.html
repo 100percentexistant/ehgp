@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>EHGP Node</title>
+    <link rel="stylesheet" href="index.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;500&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/hung1001/font-awesome-pro@4cac1a6/css/all.css" rel="stylesheet" type="text/css" />
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.1/dist/gsap.min.js"></script>
+
+    <link rel="stylesheet" href="theme/jqui/jquery-ui.css">
+    <script>window.$ = window.jQuery = require('jquery');</script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  </head>
+  <body>
+    <div class="navbar">
+      <p>ehgpnode</p>
+      <div class="controls">
+        <div class="dot yellow" id="min"></div>
+        <div class="dot green" id="max"></div>
+        <div class="dot red" id="close"></div>
+      </div>
+    </div>
+
+    <div class="box" id="ann-wrapper">
+      <div class="header">
+        <span class="back" id="ann-back">
+          <i class="fas fa-arrow-left"></i>
+        </span>
+        <h1>Announcements</h1>
+      </div>
+      <div id="ann-box" class="announcements">
+        <div class="ann-container">
+
+        </div>
+        <div class="ann-filter-container">
+          <div class="ann-filter-launcher" id="ann-filter-launcher">
+            <i class="fas fa-filter"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="box" style="transform: translate(-50%, -53%) scale(1); opacity: 1;">
+      <img src="assets/logo.png" alt="EHGP Logo" class="logo" />
+      <div class="button" id="anncment">
+        <button>
+          Announcements
+        </button>
+      </div>
+    </div>
+
+    <div class="sorter">
+      <div class="modal">
+        <div class="header">
+          <div class="back" id="sorter-back">
+            <i class="fas fa-arrow-left"></i>
+          </div>
+          <h1>Sort</h1>
+        </div>
+
+        <div class="grades-bubbles">
+          <span class="grades-bubble enabled">Freshman</span>
+          <span class="grades-bubble enabled">Sophomore</span>
+          <span class="grades-bubble enabled">Junior</span>
+          <span class="grades-bubble enabled">Senior</span>
+        </div>
+        <div class="grades-calendar">
+          <input type="text" id="datepicker" placeholder="Select a date">
+        </div>
+        <div class="grades-text">
+          <input type="text" id="grades-text" placeholder="Search by text">
+        </div>
+
+        <div class="button">
+          <button id="sorter-apply">
+            Apply
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
