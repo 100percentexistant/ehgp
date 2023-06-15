@@ -91,7 +91,7 @@ window.addEventListener("DOMContentLoaded", function () {
         document.body.style.filter = "blur(10px) brightness(0.5)";
         setTimeout(function () {
             ipc.send("close");
-        }, 500);
+        }, 700);
     });
 
     document.getElementById("min").addEventListener("click", function (e) {
