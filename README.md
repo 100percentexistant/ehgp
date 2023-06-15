@@ -32,14 +32,14 @@
   <h1>Let's compare.</h1>
   
   <h3>Dates</h3>
-  <img src="https://github.com/shellings2027/ehgp/assets/136494426/831169ab-7311-4d7f-bf82-26bc1a83993b"><img src="https://github.com/shellings2027/ehgp/assets/136494426/8bb84f5d-bcc1-4ef2-9ba8-50b05d9d2ce9">
+  <img src="https://github.com/shellings2027/ehgp/assets/136494426/831169ab-7311-4d7f-bf82-26bc1a83993b" width="40%"><img src="https://github.com/shellings2027/ehgp/assets/136494426/8bb84f5d-bcc1-4ef2-9ba8-50b05d9d2ce9" width="40%">
   <p>EHGP web date picker vs EHGP node date picker</p>
   
   <h3>Grades</h3>
-  <img src="https://github.com/shellings2027/ehgp/assets/136494426/8bd1fec4-c4b4-47e3-9d16-2b5c90ffdffb"><img src="https://github.com/shellings2027/ehgp/assets/136494426/2a115183-7544-4aeb-a9bc-88a633bad99d">
+  <img src="https://github.com/shellings2027/ehgp/assets/136494426/8bd1fec4-c4b4-47e3-9d16-2b5c90ffdffb" width="40%"><img src="https://github.com/shellings2027/ehgp/assets/136494426/2a115183-7544-4aeb-a9bc-88a633bad99d" width="40%">
   <p>EHGP web grade picker vs EHGP node grade bubbles</p>
 
   <h3>UI</h3>
-  <img src="https://github.com/shellings2027/ehgp/assets/136494426/6a0b2f1e-3144-4d58-8a6b-e2696f96eb40"><img src="https://github.com/shellings2027/ehgp/assets/136494426/2d5cbaa5-00d1-4e30-8f9c-3ecf1a8575b2">
+  <img src="https://github.com/shellings2027/ehgp/assets/136494426/6a0b2f1e-3144-4d58-8a6b-e2696f96eb40" width="40%"><img src="https://github.com/shellings2027/ehgp/assets/136494426/2d5cbaa5-00d1-4e30-8f9c-3ecf1a8575b2" width="40%">
   <p>EHGP web UI vs EHGP node UI</p>
 </div>
