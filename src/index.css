@@ -150,6 +150,16 @@ body {
   position: relative;
 }
 
+.picture {
+  max-height: 50vh;
+  width: auto;
+  margin: 1vw;
+  padding: 0;
+  border-radius: 0.5vw;
+  object-fit: cover;
+  border: 0.25vw solid rgb(92, 66, 161);
+}
+
 .announcements .ann-container {
   flex: 1;
   width: 100%;
@@ -159,7 +169,6 @@ body {
   display: flex;
   flex-direction: column;
   text-align: center;
-  justify-content: center;
   align-items: center;
   overflow-y: scroll;
   overflow-x: hidden;
@@ -402,11 +411,12 @@ input[type="text"] {
   flex: 1;
   transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
   text-align: center;
-  justify-content: center;
   align-items: center;
   display: flex;
   flex-direction: column;
   position: relative;
+  padding-top: 11vh;
+  box-sizing: border-box;
 }
 
 .ann .header {
