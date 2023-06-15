@@ -17,6 +17,9 @@
   "license": "MIT",
   "dependencies": {
     "electron-squirrel-startup": "^1.0.0",
+    "jquery": "^3.7.0",
+    "jquery-ui": "^1.13.2",
+    "jquery-ui-dist": "^1.13.2",
     "jsdom": "^22.1.0",
     "undici": "^5.22.1"
   },

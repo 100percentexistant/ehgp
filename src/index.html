@@ -11,12 +11,17 @@
     <link href="https://cdn.jsdelivr.net/gh/hung1001/font-awesome-pro@4cac1a6/css/all.css" rel="stylesheet" type="text/css" />
 
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.1/dist/gsap.min.js"></script>
+
+    <link rel="stylesheet" href="theme/jqui/jquery-ui.css">
+    <script>window.$ = window.jQuery = require('jquery');</script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   </head>
   <body>
     <div class="navbar">
       <p>ehgpnode</p>
       <div class="controls">
         <div class="dot yellow" id="min"></div>
+        <div class="dot green" id="max"></div>
         <div class="dot red" id="close"></div>
       </div>
     </div>
@@ -57,14 +62,15 @@
           </div>
           <h1>Sort</h1>
         </div>
-        <div class="calendar">
 
-        </div>
         <div class="grades-bubbles">
           <span class="grades-bubble enabled">Freshman</span>
           <span class="grades-bubble enabled">Sophomore</span>
           <span class="grades-bubble enabled">Junior</span>
           <span class="grades-bubble enabled">Senior</span>
+        </div>
+        <div class="grades-calendar">
+          <input type="text" id="datepicker" placeholder="Select a date">
         </div>
 
         <div class="button">

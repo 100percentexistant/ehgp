@@ -13,6 +13,8 @@ const createWindow = () => {
     height: 800,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
+      nodeIntegration: true,
+      contextIsolation: false
     },
     frame: false,
     icon: path.join(__dirname, '..', 'assets', 'icon.png'),
@@ -43,6 +45,15 @@ ipcMain.on('minimize', (event, arg) => {
   BrowserWindow.getFocusedWindow().minimize();
 });
 
+ipcMain.on('maximize', (event, arg) => {
+  var win = BrowserWindow.getFocusedWindow();
+  if (win.isMaximized()) {
+    win.unmaximize();
+  } else {
+    win.maximize();
+  }
+});
+
 function multipleIncludes(arr1, ...arr2) {
   var inc = 0;
   for (var i = 0; i < arr1.length; i++) {
@@ -53,18 +64,70 @@ function multipleIncludes(arr1, ...arr2) {
   return inc == arr1.length;
 }
 
+function onlyIncludes(arr1, ...arr2) {
+  var inc = 0;
+  for (var i = 0; i < arr2.length; i++) {
+    if (arr1.includes(arr2[i])) {
+      inc++;
+    }
+  }
+  return inc == arr1.length;
+}
+
 ipcMain.on('parsePls', async (event, arg) => {
   switch (arg.type) {
     case 'ann':
-      var grd = !arg.grade ? 0 : multipleIncludes(arg.grade, 'Freshman', 'Sophomore', 'Junior', 'Senior') ? 0 : arg.grade == ['Freshman'] ? 1 : arg.grade == ['Sophomore'] ? 2 : arg.grade == ['Junior'] ? 3 : arg.grade == ['Senior'] ? 4 : arg.grade == ['Sophomore', 'Junior'] ? 5 : arg.grade == ['Junior', 'Senior'] ? 6 : 7;
+      var grd;
+      if (onlyIncludes(arg.grade, "Freshman")) {
+        grd = 1;
+      } else if (onlyIncludes(arg.grade, "Sophomore")) {
+        grd = 2;
+      } else if (onlyIncludes(arg.grade, "Junior")) {
+        grd = 3;
+      } else if (onlyIncludes(arg.grade, "Senior")) {
+        grd = 4;
+      } else if (onlyIncludes(arg.grade, "Freshman", "Sophomore")) {
+        grd = 5;
+      } else if (onlyIncludes(arg.grade, "Sophomore", "Junior")) {
+        grd = 6;
+      } else if (onlyIncludes(arg.grade, "Junior", "Senior")) {
+        grd = 7;
+      } else if (onlyIncludes(arg.grade, "Freshman", "Sophomore", "Junior", "Senior")) {
+        grd = 0;
+      } else {
+        grd = "Invalid";
+      }
       var date;
+      if (arg.date) {
+        date = new Date(arg.date);
+      } else {
+        date = new Date();
+      }
+      date = date.toISOString().split('T')[0];
       var qs = '';
-      if (arg.date && grd) {
+      if (!(
+          onlyIncludes(arg.grade, "Freshman") ||
+          onlyIncludes(arg.grade, "Sophomore") ||
+          onlyIncludes(arg.grade, "Junior") ||
+          onlyIncludes(arg.grade, "Senior") ||
+          onlyIncludes(arg.grade, "Freshman", "Sophomore") ||
+          onlyIncludes(arg.grade, "Sophomore", "Junior") ||
+          onlyIncludes(arg.grade, "Junior", "Senior") ||
+          onlyIncludes(arg.grade, "Freshman", "Sophomore", "Junior", "Senior")
+      ) || grd == "Invalid") {
+        return event.sender.send('reply', {
+          type: 'ann',
+          status: 'Invalid grade',
+        });
+      }
+      if (date && grd) {
         qs = `?date=${date}&view=${grd}`;
-      } else if (arg.date) {
-        qs = `?date=${date}`;
-      } else if (grd) {
-        qs = `?view=${grd}`;
+      } else {
+        if (!date) {
+          qs = `?view=${grd}`;
+        } else if (!grd) {
+          qs = `?date=${date}`;
+        }
       }
       var resp = await (await fetch("https://ehgp.holyghostprep.org/announcements.php/" + qs, {
         "headers": {
@@ -92,8 +155,24 @@ ipcMain.on('parsePls', async (event, arg) => {
       var dates = [...dom.window.document.querySelectorAll('#navbarNavAltMarkup > ul > div > li:nth-child(2) > div > form > select > option')].map(x => x.value);
       status.dates = dates;
       var center = dom.window.document.querySelector('#canv-container > h3:nth-child(8)');
-      if (center.textContent == 'No Announcements Today') {
-        status.now = 'No announcements, enjoy your day!';
+      if (!status.anns) status.anns = [];
+      if (!center) {
+        var announcements = [...dom.window.document.querySelectorAll('#canv-container > div.card-container')];
+        for (var i = 0; i < announcements.length; i++) {
+          var from = announcements[i].querySelector(':scope h5.card-header').textContent;
+          var to = announcements[i].querySelector(':scope > .card > div.card-body > h5.card-title').textContent;
+          var content = announcements[i].querySelector(':scope > .card > div.card-body > p.card-text').innerHTML;
+          status.anns.push({
+            from: from,
+            to: to,
+            content: content
+          });
+          status.now = 'Announcement now';
+        }
+      } else {
+        if (center.textContent == 'No Announcements Today') {
+          status.now = 'No announcements, enjoy your day!';
+        }
       }
 
       return event.sender.send('reply', {
