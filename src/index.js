@@ -2,6 +2,18 @@ const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 var fetch = require('undici').request;
 var { JSDOM } = require('jsdom');
+var Store = require('./lib/store.js');
+
+var store = new Store({
+  configName: 'hgp-cache',
+  defaults: {
+    announcements: []
+  }
+});
+
+if (!store.get('announcements')) {
+  store.set('announcements', []);
+}
 
 if (require('electron-squirrel-startup')) {
   app.quit();
@@ -23,7 +35,13 @@ const createWindow = () => {
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
 };
 
-app.on('ready', createWindow);
+var cache = [];
+
+app.on('ready', () => {
+  createWindow();
+  var cache = store.get('announcements');
+  cache = cache ? cache : [];
+});
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
@@ -129,6 +147,15 @@ ipcMain.on('parsePls', async (event, arg) => {
           qs = `?date=${date}`;
         }
       }
+      if (cache.length > 0) {
+        if (cache.find(x => x.date == date && x.grade == grd)) {
+          return event.sender.send('reply', {
+            type: 'ann',
+            now: 'Cached',
+            status: cache.find(x => x.date == date && x.grade == grd).data
+          });
+        }
+      }
       var resp = await (await fetch("https://ehgp.holyghostprep.org/announcements.php/" + qs, {
         "headers": {
           "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
@@ -167,6 +194,11 @@ ipcMain.on('parsePls', async (event, arg) => {
             to: to,
             content: content
           });
+          cache.push({
+            date: date,
+            grade: grd,
+            data: status
+          })
           status.now = 'Announcement now';
         }
       } else {

@@ -137,7 +137,8 @@ body {
 
 .announcements {
   width: 95%;
-  height: 70%;
+  min-height: 80%;
+  max-height: max-content;
   background-color: rgb(20, 22, 34);
   color: white;
   border-radius: 0.5vw;
