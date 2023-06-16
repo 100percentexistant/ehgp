@@ -26,10 +26,10 @@
       </div>
     </div>
 
-    <div class="box" id="ann-wrapper">
+    <div class="box hidden" id="ann-wrapper">
       <div class="header">
         <span class="back" id="ann-back">
-          <i class="fas fa-arrow-left"></i>
+          <i class="fal fa-arrow-left"></i>
         </span>
         <h1>Announcements</h1>
       </div>
@@ -39,18 +39,23 @@
         </div>
         <div class="ann-filter-container">
           <div class="ann-filter-launcher" id="ann-filter-launcher">
-            <i class="fas fa-filter"></i>
+            <i class="fal fa-filter"></i>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="box" style="transform: translate(-50%, -53%) scale(1); opacity: 1;">
-      <img src="assets/logo.png" alt="EHGP Logo" class="logo" />
+    <div class="box">
+      <img src="assets/logo.png" alt="EHGP Logo" class="logo" id="logo" />
       <div class="button" id="anncment">
         <button>
           Announcements
         </button>
+      </div>
+      <br>
+      <div id="quote" class="invisible">
+        <h3 id="author" class="invisible"></h3>
+        <p id="saying"></p>
       </div>
     </div>
 
@@ -58,7 +63,7 @@
       <div class="modal">
         <div class="header">
           <div class="back" id="sorter-back">
-            <i class="fas fa-arrow-left"></i>
+            <i class="fal fa-arrow-left"></i>
           </div>
           <h1>Sort</h1>
         </div>
@@ -85,9 +90,13 @@
     </div>
 
     <div class="watermark">
-      <p>EHGP-Node by Stephen Hellings '27</p>
+      <p>EHGP-Node <i class="ehgpn-icon-pulse fal fa-heart"></i> by Stephen Hellings '27</p>
       <p>EHGP web by Jack Pinkstone '19 & Ben Scuron '19 built</p>
       <p>with help by with help by Mr. Michael Jacobs '01 and Mr. Brandon Petcaugh</p>
+    </div>
+
+    <div class="toast" id="toast">
+      <p id="toast-text"></p>
     </div>
   </body>
 </html>

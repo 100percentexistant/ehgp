@@ -1,7 +1,7 @@
 {
   "name": "ehgp",
   "productName": "ehgp",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "An Electron-based web app for Electronic Holy Ghost Prep.",
   "main": "src/index.js",
   "scripts": {

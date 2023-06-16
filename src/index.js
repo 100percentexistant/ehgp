@@ -96,7 +96,9 @@ ipcMain.on("parsePls", async (event, arg) => {
     switch (arg.type) {
         case "ann":
             var grd;
-            if (onlyIncludes(arg.grade, "Freshman")) {
+            if (!arg.grade) {
+                grd = 0;
+            } else if (onlyIncludes(arg.grade, "Freshman")) {
                 grd = 1;
             } else if (onlyIncludes(arg.grade, "Sophomore")) {
                 grd = 2;
@@ -121,7 +123,7 @@ ipcMain.on("parsePls", async (event, arg) => {
             ) {
                 grd = 0;
             } else {
-                grd = "Invalid";
+                grd = 0;
             }
             var date;
             if (arg.date) {
@@ -131,29 +133,31 @@ ipcMain.on("parsePls", async (event, arg) => {
             }
             date = date.toISOString().split("T")[0];
             var qs = "";
-            if (
-                !(
-                    onlyIncludes(arg.grade, "Freshman") ||
-                    onlyIncludes(arg.grade, "Sophomore") ||
-                    onlyIncludes(arg.grade, "Junior") ||
-                    onlyIncludes(arg.grade, "Senior") ||
-                    onlyIncludes(arg.grade, "Freshman", "Sophomore") ||
-                    onlyIncludes(arg.grade, "Sophomore", "Junior") ||
-                    onlyIncludes(arg.grade, "Junior", "Senior") ||
-                    onlyIncludes(
-                        arg.grade,
-                        "Freshman",
-                        "Sophomore",
-                        "Junior",
-                        "Senior"
-                    )
-                ) ||
-                grd == "Invalid"
-            ) {
-                return event.sender.send("reply", {
-                    type: "ann",
-                    status: "Invalid grade",
-                });
+            if (arg.grade) {
+                if (
+                    !(
+                        onlyIncludes(arg.grade, "Freshman") ||
+                        onlyIncludes(arg.grade, "Sophomore") ||
+                        onlyIncludes(arg.grade, "Junior") ||
+                        onlyIncludes(arg.grade, "Senior") ||
+                        onlyIncludes(arg.grade, "Freshman", "Sophomore") ||
+                        onlyIncludes(arg.grade, "Sophomore", "Junior") ||
+                        onlyIncludes(arg.grade, "Junior", "Senior") ||
+                        onlyIncludes(
+                            arg.grade,
+                            "Freshman",
+                            "Sophomore",
+                            "Junior",
+                            "Senior"
+                        )
+                    ) ||
+                    grd == "Invalid"
+                ) {
+                    return event.sender.send("reply", {
+                        type: "ann",
+                        status: "Invalid grade",
+                    });
+                }
             }
             if (date && grd) {
                 qs = `?date=${date}&view=${grd}`;
@@ -291,15 +295,29 @@ ipcMain.on("parsePls", async (event, arg) => {
                     }
                 }
             } else {
-                if (resp.trim() == '') {
+                if (resp.trim() == "") {
                     status.now = "No announcements, enjoy your day!";
                 } else {
-                    var cards = [...dom.window.document.querySelectorAll(".card")];
+                    var cards = [
+                        ...dom.window.document.querySelectorAll(".card"),
+                    ];
                     for (var i = 0; i < cards.length; i++) {
-                        var from = cards[i].querySelector(":scope > h5.card-header").innerHTML.split('<br>')[0].trim();
-                        var date = cards[i].querySelector(":scope > h5.card-header").innerHTML.split('<br>')[1].trim().split(':')[1].trim();
-                        var to = cards[i].querySelector(":scope > .card-body > .card-title").innerHTML.trim();
-                        var content = cards[i].querySelector(":scope > .card-body > .card-text").innerHTML.trim();
+                        var from = cards[i]
+                            .querySelector(":scope > h5.card-header")
+                            .innerHTML.split("<br>")[0]
+                            .trim();
+                        var date = cards[i]
+                            .querySelector(":scope > h5.card-header")
+                            .innerHTML.split("<br>")[1]
+                            .trim()
+                            .split(":")[1]
+                            .trim();
+                        var to = cards[i]
+                            .querySelector(":scope > .card-body > .card-title")
+                            .innerHTML.trim();
+                        var content = cards[i]
+                            .querySelector(":scope > .card-body > .card-text")
+                            .innerHTML.trim();
                         status.anns.push({
                             from: from,
                             to: to,
